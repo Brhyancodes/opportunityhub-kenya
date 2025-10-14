@@ -21,5 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("accounts.urls")),  # Authentication endpoints
+    path("api/youth/", include("youth_profiles.urls")),  # Youth profile endpoints
     path("api-auth/", include("rest_framework.urls")),  # DRF browsable API login
 ]
