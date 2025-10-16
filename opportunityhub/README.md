@@ -298,7 +298,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Brian Wakhale**
 - GitHub: [Brhyancodes](https://github.com/Brhyancodes)
 - LinkedIn: [Brian Wakhale](https://www.linkedin.com/in/brian-wakhale/)
 
