@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Opportunity, Skill
+from .models import Opportunity, Skill, Application
 from employers.serializers import EmployerProfileSerializer
+from accounts.serializers import UserSerializer
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -93,3 +94,68 @@ class OpportunityCreateUpdateSerializer(serializers.ModelSerializer):
                 instance.required_skills.add(skill)
 
         return instance
+
+
+from accounts.serializers import UserSerializer
+
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    """
+    Full serializer for viewing applications with nested data
+    """
+
+    youth = UserSerializer(read_only=True)
+    opportunity = OpportunitySerializer(read_only=True)
+
+    class Meta:
+        model = Application
+        fields = [
+            "id",
+            "opportunity",
+            "youth",
+            "status",
+            "cover_letter",
+            "applied_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "applied_at", "updated_at"]
+
+
+class ApplicationCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for creating applications (youth applying)
+    """
+
+    class Meta:
+        model = Application
+        fields = ["cover_letter"]
+
+    def validate(self, data):
+        # Check if opportunity is still active
+        opportunity = self.context.get("opportunity")
+        if not opportunity.is_active:
+            raise serializers.ValidationError("This opportunity is no longer active")
+
+        # Check if deadline has passed
+        if opportunity.application_deadline:
+            from django.utils import timezone
+
+            if opportunity.application_deadline < timezone.now().date():
+                raise serializers.ValidationError("Application deadline has passed")
+
+        return data
+
+
+class ApplicationStatusUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for employers to update application status
+    """
+
+    class Meta:
+        model = Application
+        fields = ["status"]
+
+    def validate_status(self, value):
+        if value not in ["pending", "reviewing", "accepted", "rejected"]:
+            raise serializers.ValidationError("Invalid status")
+        return value

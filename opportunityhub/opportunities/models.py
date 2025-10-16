@@ -90,3 +90,37 @@ class Opportunity(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.employer.company_name}"
+
+
+class Application(models.Model):
+    """
+    Job applications submitted by youth for opportunities
+    """
+
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("reviewing", "Reviewing"),
+        ("accepted", "Accepted"),
+        ("rejected", "Rejected"),
+    ]
+
+    opportunity = models.ForeignKey(
+        Opportunity, on_delete=models.CASCADE, related_name="applications"
+    )
+    youth = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="applications",
+        limit_choices_to={"user_type": "youth"},
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    cover_letter = models.TextField(blank=True, null=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-applied_at"]
+        unique_together = ["opportunity", "youth"]  # Prevent duplicate applications
+
+    def __str__(self):
+        return f"{self.youth.username} - {self.opportunity.title} ({self.status})"
