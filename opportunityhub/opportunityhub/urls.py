@@ -22,5 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("accounts.urls")),  # Authentication endpoints
     path("api/youth/", include("youth_profiles.urls")),  # Youth profile endpoints
+    path("api/opportunities/", include("opportunities.urls")),  # Opportunity endpoints
+    path("api/employers/", include("employers.urls")),  # Employer profile endpoints
     path("api-auth/", include("rest_framework.urls")),  # DRF browsable API login
 ]
