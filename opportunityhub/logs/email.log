@@ -1,0 +1,6 @@
+ERROR 2025-10-18 21:46:43,258 email_service Failed to send email to brianweke1998@gmail.com: API key is invalid
+ERROR 2025-10-18 21:50:27,916 email_service Failed to send email to brianweke1998@gmail.com: You can only send testing emails to your own email address (brianwekesa63@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.
+INFO 2025-10-18 21:52:41,025 email_service Email sent successfully to brianwekesa63@gmail.com - ID: aba122f6-cc0e-4616-934d-04dd24d5b496
+INFO 2025-10-18 22:02:15,769 email_service Email sent successfully to brianwekesa63@gmail.com - ID: 930d0a88-aa52-44d0-9be7-0641a1ff5155
+INFO 2025-10-18 22:02:27,827 email_service Email sent successfully to brianwekesa63@gmail.com - ID: dde0e328-0cbd-47a6-ac51-ec05f67be76e
+INFO 2025-10-18 22:02:42,936 email_service Email sent successfully to brianwekesa63@gmail.com - ID: d847d40d-9480-4a9d-bc17-d67083f797fe

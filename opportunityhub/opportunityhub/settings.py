@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+
+# Load environment variables from .env file
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -165,4 +171,62 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
+}
+
+# ==================== RESEND EMAIL CONFIGURATION ====================
+
+# Resend API Key (from environment variable)
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+
+# Email Settings
+DEFAULT_FROM_EMAIL = "OpportunityHub Kenya <onboarding@resend.dev>"
+# For production with verified domain, use: 'OpportunityHub Kenya <noreply@opportunityhub.co.ke>'
+
+# Email timeout
+EMAIL_TIMEOUT = 10  # seconds
+
+# Admin emails (for error notifications)
+ADMINS = [("Admin", "admin@opportunityhub.co.ke")]
+
+# ==================== LOGGING CONFIGURATION ====================
+# Create logs directory if it doesn't exist
+LOGS_DIR = BASE_DIR / "logs"
+LOGS_DIR.mkdir(exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": LOGS_DIR / "email.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "notifications": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "notifications.email_service": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
 }
